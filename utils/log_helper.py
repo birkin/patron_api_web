@@ -22,4 +22,5 @@ def setup_logger():
     file_handler = logging.FileHandler( LOG_PATH )
     file_handler.setFormatter( formatter )
     logger.addHandler( file_handler )
+    logger.debug( 'logger initialized' )
     return logger
