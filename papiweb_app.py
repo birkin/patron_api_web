@@ -31,16 +31,13 @@ def root_redirect():
 def handle_v1():
     """ Grabs barcode, performs lookup, & returns json results. """
     logger.debug( 'starting grab' )
-    # try:
     if papi_helper.validate_request( flask.request.args ) == False:
         logger.info( 'request invalid, returning 400' )
         flask.abort( 400 )  # `Bad Request`
-    dct = papi_helper.do_lookup( flask.request.args )
-    logger.debug( 'lib result dct, `%s`' % pprint.pformat(dct) )
-    return flask.jsonify( dct )
-    # except Exception as e:
-    #     print 'exception, `%s`' % unicode(repr(e))
-    #     return '<p>foo</p>'
+    jdct = papi_helper.do_lookup( flask.request.args )
+    logger.debug( 'lib result dct, `%s`' % pprint.pformat(jdct) )
+    return_dct = papi_helper.build_response_dct( flask.request.args, jdct )
+    return flask.jsonify( return_dct )
 
 
 

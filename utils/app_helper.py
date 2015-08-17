@@ -41,12 +41,32 @@ class PapiHelper( object ):
     def do_lookup( self, params ):
         """ Runs lookup; returns patron-api html output.
             Called by papiweb_app.handle_v1() """
-        # defaults = self.load_papi_defaults()
+        self.logger.debug( "params['patron_barcode'], `%s`" % params['patron_barcode'] )
         papi = PatronAPI( self.defaults )
-        papi_json = papi.grab_data( params['user_barcode'] )
-        self.logger.debug( 'papi_json, `%s`' % papi_json )
-        jdct = json.loads( papi_json )
+        self.logger.debug( 'a' )
+        try:
+            papi_json = papi.grab_data( params['patron_barcode'] )
+            self.logger.debug( 'b' )
+            self.logger.debug( 'papi_json, `%s`' % papi_json )
+            self.logger.debug( 'c' )
+            jdct = json.loads( papi_json )
+            self.logger.debug( 'jdct, `%s`' % pprint.pformat(jdct) )
+        except Exception as e:
+            jdct = self.build_error_dict( e )
         return jdct
+
+    def build_response_dct( self, params, jdct ):
+        """ Assembles request and response parts of the returned response.
+            Called by papiweb_app.handle_v1() """
+        request_dct = {
+            'timestamp': unicode( datetime.datetime.now() ),
+            'patron_barcode': params['patron_barcode']
+            }
+        return_dct = {
+            'request': request_dct,
+            'response': jdct
+            }
+        return return_dct
 
     ## helper functions (called by above functions)
 
@@ -72,6 +92,12 @@ class PapiHelper( object ):
             self.logger.debug( 'bad ip, `%s`' % flask.request.remote_addr )
         self.logger.debug( 'ip_good, `%s`' % ip_good )
         return ip_good
+
+    def build_error_dict( self, e ):
+        """ Builds error dict.
+            Called by self.do_lookup() """
+        dct = { 'error': unicode(repr(e)) }
+        return dct
 
     # end class PapiHelper()
 
