@@ -26,17 +26,16 @@ def root_redirect():
     return flask.redirect( 'https://github.com/birkin/papiweb/blob/master/README.md', code=303 )
 
 
-@app.route( '/v1', methods=['POST'] )  # /papiweb/v1
+@app.route( '/v1', methods=['GET'] )  # /papiweb/v1
 def handle_v1():
     """ Grabs barcode, performs lookup, & returns json results. """
     logger.debug( 'starting' )
     if papi_helper.validate_request( flask.request.form ) == False:
         logger.info( 'request invalid, returning 400' )
         flask.abort( 400 )  # `Bad Request`
-    result_data = papi_helper.do_lookup( flask.request.form )
-    interpreted_response_dct = papi_helper.interpret_result( result_data )
-    logger.debug( 'returning response' )
-    return flask.jsonify( interpreted_response_dct )
+    dct = papi_helper.do_lookup()
+    logger.debug( 'lib result dct, `%s`' % pprint.pformat(dct) )
+    return flask.jsonify( dct )
 
 
 
