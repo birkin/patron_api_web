@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 """
-Helper for bdpyweb_app.py
+Helper for papiweb_app.py
 """
 
 import datetime, json, os, pprint, time
@@ -70,7 +70,7 @@ class PapiHelper( object ):
     def check_ip( self ):
         """ Checks ip; returns boolean.
             Called by validate_request() """
-        LEGIT_IPS = json.loads( unicode(os.environ['bdpyweb__LEGIT_IPS']))
+        LEGIT_IPS = json.loads( unicode(os.environ['papiweb__LEGIT_IPS']))
         ip_good = False
         if flask.request.remote_addr in LEGIT_IPS:
             ip_good = True
@@ -82,8 +82,8 @@ class PapiHelper( object ):
     def check_auth( self, params ):
         """ Checks auth params; returns boolean.
             Called by validate_request() """
-        API_AUTHORIZATION_CODE = unicode( os.environ['bdpyweb__API_AUTHORIZATION_CODE'] )  # for v1
-        API_IDENTITY = unicode( os.environ['bdpyweb__API_IDENTITY'] )  # for v1
+        API_AUTHORIZATION_CODE = unicode( os.environ['papiweb__API_AUTHORIZATION_CODE'] )  # for v1
+        API_IDENTITY = unicode( os.environ['papiweb__API_IDENTITY'] )  # for v1
         auth_good = False
         if params.get( 'api_authorization_code', 'nope' ) == API_AUTHORIZATION_CODE:
             if params.get( 'api_identity', 'nope' ) == API_IDENTITY:
