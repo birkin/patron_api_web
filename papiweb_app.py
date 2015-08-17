@@ -11,8 +11,8 @@ from papiweb_code.utils.app_helper import PapiHelper
 
 
 app = flask.Flask(__name__)
-app.config['BASIC_AUTH_USERNAME'] = unicode( os.environ['papiweb__BASIC_AUTH_USERNAME'] )
-app.config['BASIC_AUTH_PASSWORD'] = unicode( os.environ['papiweb__BASIC_AUTH_PASSWORD'] )
+# app.config['BASIC_AUTH_USERNAME'] = unicode( os.environ['papiweb__BASIC_AUTH_USERNAME'] )
+# app.config['BASIC_AUTH_PASSWORD'] = unicode( os.environ['papiweb__BASIC_AUTH_PASSWORD'] )
 app.secret_key = unicode( os.environ['papiweb__SECRET_KEY'] )
 basic_auth = BasicAuth( app )
 logger = log_helper.setup_logger()
@@ -23,7 +23,7 @@ papi_helper = PapiHelper()
 def root_redirect():
     """ Redirects to readme. """
     logger.debug( 'starting' )
-    return flask.redirect( 'https://github.com/birkin/papiweb/blob/master/README.md', code=303 )
+    return flask.redirect( 'https://github.com/birkin/patron_api_web/blob/master/README.md', code=303 )
 
 
 @app.route( '/v1', methods=['GET'] )  # /papiweb/v1
