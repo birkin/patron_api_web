@@ -9,7 +9,8 @@ Helper for papiweb_app.py
 import datetime, json, logging, os, pprint, time
 import flask
 import requests
-from p_api import PatronAPI
+# from p_api import PatronAPI
+from connector import PatronAPI
 
 
 # logger = logging.getLogger(__name__)
