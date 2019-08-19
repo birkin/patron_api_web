@@ -10,14 +10,19 @@ import flask, requests
 from papiweb_code.utils.connector import PatronAPI
 
 
-# logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 class PapiHelper( object ):
     """ Helper functions for app->handle_ezb_v1() """
 
-    def __init__( self, logger ):
-        self.logger = logger
+    # def __init__( self, logger ):
+    #     self.logger = logger
+    #     self.defaults = {
+    #         'PATRON_API_URL_PATTERN': os.environ['papiweb__PATRON_API_URL_PATTERN'],
+    #         }
+
+    def __init__( self ):
         self.defaults = {
             'PATRON_API_URL_PATTERN': os.environ['papiweb__PATRON_API_URL_PATTERN'],
             }
@@ -27,32 +32,32 @@ class PapiHelper( object ):
     def validate_request( self, params ):
         """ Checks params, ip, & auth info; returns boolean.
             Called by papiweb_app.handle_v1() """
-        self.logger.debug( 'starting validate..., params, `%s`' % params )
+        log.debug( 'starting validate..., params, `%s`' % params )
         validity = False
         keys_good = self.check_keys( params )
         ip_good = self.check_ip( flask.request.remote_addr )
         if keys_good and ip_good:
             validity = True
-        self.logger.debug( 'validity, `%s`' % validity )
+        log.debug( 'validity, `%s`' % validity )
         return validity
 
     def do_lookup( self, params ):
         """ Runs lookup; returns patron-api html output.
             Called by papiweb_app.handle_v1() """
-        self.logger.debug( "params['patron_barcode'], `%s`" % params['patron_barcode'] )
+        log.debug( "params['patron_barcode'], `%s`" % params['patron_barcode'] )
         cleaned_patron_barcode = params['patron_barcode'].replace( ' ', '' )
-        self.logger.debug( f'cleaned_patron_barcode, `{cleaned_patron_barcode}`' )
+        log.debug( f'cleaned_patron_barcode, `{cleaned_patron_barcode}`' )
         papi = PatronAPI( self.defaults )
-        self.logger.debug( 'a' )
+        log.debug( 'a' )
         try:
             papi_json = papi.grab_data( cleaned_patron_barcode )
-            self.logger.debug( 'b' )
-            self.logger.debug( 'papi_json, `%s`' % papi_json )
-            self.logger.debug( 'c' )
+            log.debug( 'b' )
+            log.debug( 'papi_json, `%s`' % papi_json )
+            log.debug( 'c' )
             jdct = json.loads( papi_json )
-            self.logger.debug( 'jdct, `%s`' % pprint.pformat(jdct) )
+            log.debug( 'jdct, `%s`' % pprint.pformat(jdct) )
         except Exception as e:
-            self.logger.exception( 'exception on lookup; traceback follows; processing will continue...' )
+            log.exception( 'exception on lookup; traceback follows; processing will continue...' )
             jdct = self.build_error_dict( e )
         return jdct
 
@@ -76,10 +81,10 @@ class PapiHelper( object ):
             Called by validate_request() """
         keys_good = False
         patron_barcode = params.get( 'patron_barcode', '' )
-        self.logger.debug( 'patron_barcode, `%s`' % patron_barcode )
+        log.debug( 'patron_barcode, `%s`' % patron_barcode )
         if len( patron_barcode ) > 5:
             keys_good = True
-        self.logger.debug( 'keys_good, `%s`' % keys_good )
+        log.debug( 'keys_good, `%s`' % keys_good )
         return keys_good
 
     def check_ip( self, perceived_ip ):
@@ -90,8 +95,8 @@ class PapiHelper( object ):
         if perceived_ip in LEGIT_IPS:
             ip_good = True
         else:
-            self.logger.debug( 'bad ip, `%s`' % flask.request.remote_addr )
-        self.logger.debug( 'ip_good, `%s`' % ip_good )
+            log.debug( 'bad ip, `%s`' % flask.request.remote_addr )
+        log.debug( 'ip_good, `%s`' % ip_good )
         return ip_good
 
     def build_error_dict( self, e ):
