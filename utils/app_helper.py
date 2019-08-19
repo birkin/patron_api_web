@@ -7,7 +7,7 @@ Helper for papiweb_app.py
 import datetime, json, logging, os, pprint, time
 
 import flask, requests
-from papiweb_code.utils.p_api import PatronAPI
+from papiweb_code.utils.connector import PatronAPI
 
 
 # logger = logging.getLogger(__name__)
@@ -50,6 +50,7 @@ class PapiHelper( object ):
             jdct = json.loads( papi_json )
             self.logger.debug( 'jdct, `%s`' % pprint.pformat(jdct) )
         except Exception as e:
+            self.logger.exception( 'exception on lookup; traceback follows; processing will continue...' )
             jdct = self.build_error_dict( e )
         return jdct
 
@@ -57,7 +58,7 @@ class PapiHelper( object ):
         """ Assembles request and response parts of the returned response.
             Called by papiweb_app.handle_v1() """
         request_dct = {
-            'timestamp': unicode( datetime.datetime.now() ),
+            'timestamp': str( datetime.datetime.now() ),
             'patron_barcode': params['patron_barcode']
             }
         return_dct = {
@@ -82,7 +83,7 @@ class PapiHelper( object ):
     def check_ip( self, perceived_ip ):
         """ Checks ip; returns boolean.
             Called by validate_request() """
-        LEGIT_IPS = json.loads( unicode(os.environ['papiweb__LEGIT_IPS']))
+        LEGIT_IPS = json.loads( os.environ['papiweb__LEGIT_IPS'] )
         ip_good = False
         if perceived_ip in LEGIT_IPS:
             ip_good = True
@@ -94,7 +95,7 @@ class PapiHelper( object ):
     def build_error_dict( self, e ):
         """ Builds error dict.
             Called by self.do_lookup() """
-        dct = { 'error': unicode(repr(e)) }
+        dct = { 'error': repr(e) }
         return dct
 
     # end class PapiHelper()
