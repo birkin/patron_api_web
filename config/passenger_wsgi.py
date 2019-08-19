@@ -34,7 +34,8 @@ SETTINGS_FILE = os.environ['papiweb__SETTINGS_PATH']  # set in activate_this.py,
 import shellvars
 var_dct = shellvars.get_vars( SETTINGS_FILE )
 for ( key, val ) in var_dct.items():
-    os.environ[key] = val
+    # os.environ[key] = val
+    os.environ[key.decode('utf-8')] = val.decode('utf-8')
 
 ## set up logging
 LOG_PATH = os.environ['papiweb__LOG_PATH']
