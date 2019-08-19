@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-
 import datetime, json, logging, os, pprint
+
 import flask
 from flask import render_template
-from flask.ext.basicauth import BasicAuth  # http://flask-basicauth.readthedocs.org/en/latest/
+from flask_basicauth import BasicAuth
 from papiweb_code.utils import log_helper
 from papiweb_code.utils.app_helper import PapiHelper
 
 
 app = flask.Flask(__name__)
-app.config['BASIC_AUTH_USERNAME'] = unicode( os.environ['papiweb__BASIC_AUTH_USERNAME'] )
-app.config['BASIC_AUTH_PASSWORD'] = unicode( os.environ['papiweb__BASIC_AUTH_PASSWORD'] )
-app.secret_key = unicode( os.environ['papiweb__SECRET_KEY'] )
+app.config['BASIC_AUTH_USERNAME'] = os.environ['papiweb__BASIC_AUTH_USERNAME']
+app.config['BASIC_AUTH_PASSWORD'] = os.environ['papiweb__BASIC_AUTH_PASSWORD']
+app.secret_key = os.environ['papiweb__SECRET_KEY']
 basic_auth = BasicAuth( app )
 logger = log_helper.setup_logger()
 papi_helper = PapiHelper( logger )
