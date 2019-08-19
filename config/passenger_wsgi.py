@@ -25,13 +25,13 @@ SETTINGS_FILE = os.environ['papiweb__SETTINGS_PATH']
 import shellvars
 var_dct = shellvars.get_vars( SETTINGS_FILE )
 for ( key, val ) in var_dct.items():
-    # os.environ[key] = val
     os.environ[key.decode('utf-8')] = val.decode('utf-8')
 
 ## set up logging
 LOG_PATH = os.environ['papiweb__LOG_PATH']
 logging.basicConfig(
-    filename=LOG_PATH, level=logging.DEBUG,
+    filename=LOG_PATH,
+    level=logging.DEBUG,
     format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
     datefmt='%d/%b/%Y %H:%M:%S'
     )

@@ -5,32 +5,29 @@ import datetime, json, logging, os, pprint
 import flask
 from flask import render_template
 from flask_basicauth import BasicAuth
-# from papiweb_code.utils import log_helper
 from papiweb_code.utils.app_helper import PapiHelper
 
 
-# log = logging.getLogger(__name__)
 
-## set up logging
-LOG_PATH = os.environ['papiweb__LOG_PATH']
-logging.basicConfig(
-    filename=LOG_PATH, level=logging.DEBUG,
-    format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
-    datefmt='%d/%b/%Y %H:%M:%S'
-    )
-log = logging.getLogger(__name__)
-log.debug( 'log setup' )
-
-
+## setup
 app = flask.Flask(__name__)
 app.config['BASIC_AUTH_USERNAME'] = os.environ['papiweb__BASIC_AUTH_USERNAME']
 app.config['BASIC_AUTH_PASSWORD'] = os.environ['papiweb__BASIC_AUTH_PASSWORD']
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.secret_key = os.environ['papiweb__SECRET_KEY']
+
 basic_auth = BasicAuth( app )
-# logger = log_helper.setup_logger()
-# papi_helper = PapiHelper( logger )
 papi_helper = PapiHelper()
+
+LOG_PATH = os.environ['papiweb__LOG_PATH']
+logging.basicConfig(
+    filename=LOG_PATH,
+    level=logging.DEBUG,
+    format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
+    datefmt='%d/%b/%Y %H:%M:%S'
+    )
+log = logging.getLogger(__name__)
+log.debug( 'log setup' )
 
 
 @app.route( '/', methods=['GET'] )  # /papiweb
