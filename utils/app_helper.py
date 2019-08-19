@@ -4,13 +4,14 @@
 Helper for papiweb_app.py
 """
 
-import datetime, json, logging, os, pprint, time
+import datetime, json, os, pprint, time
 
 import flask, requests
+from papiweb_code.utils import log_config
 from papiweb_code.utils.connector import PatronAPI
 
 
-log = logging.getLogger(__name__)
+log = log_config.setup_logger()
 
 
 class PapiHelper( object ):

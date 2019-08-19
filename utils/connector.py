@@ -1,21 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import json, logging, os, pprint, re
+import json, os, pprint, re
+
 import requests
+from papiweb_code.utils import log_config
 
 
-## log to console
-LOG_PATH = os.environ['papiweb__LOG_PATH']
-LOG_LEVEL = os.environ.get('papiweb__LOG_LEVEL')
-level_dict = { 'debug': logging.DEBUG, 'info':logging.INFO }
-logging.basicConfig(
-    filename=LOG_PATH,
-    level=level_dict[LOG_LEVEL],
-    format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
-    datefmt='%d/%b/%Y %H:%M:%S'
-    )
-log = logging.getLogger(__name__)
-log.debug( 'connector log setup' )
+log = log_config.setup_logger()
 
 
 class PatronAPI( object ):
