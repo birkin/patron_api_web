@@ -33,7 +33,9 @@ class PatronApiTests( unittest.TestCase ):
     def test_clean_barcode(self):
         """ Checks barcode-massaging. """
         barcode = '1234567'
-        self.assertEqual( 'foo', self.api_helper.clean_barcode(barcode) )
+        self.assertEqual( '1234567', self.api_helper.clean_barcode(barcode) )
+        barcode = '123 4567'
+        self.assertEqual( '1234567', self.api_helper.clean_barcode(barcode) )
 
     def test_grab_data(self):
         """ Tests response is json of hashes.
