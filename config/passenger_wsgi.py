@@ -12,20 +12,6 @@
 import logging, os, pprint, sys
 
 
-# ## become self-aware, padawan
-# current_directory = os.path.dirname( os.path.abspath(__file__) )
-
-# ## vars
-# # ACTIVATE_FILE = os.path.abspath( '%s/../../env3_papiweb/bin/activate_this.py' % current_directory )
-# PROJECT_DIR = os.path.abspath( '%s/../../papiweb_code' % current_directory )
-# PROJECT_ENCLOSING_DIR = os.path.abspath( '%s/../..' % current_directory )
-# SITE_PACKAGES_DIR = os.path.abspath( '%s/../../env3_papiweb/lib/python3.6/site-packages' % current_directory )
-
-# ## sys.path additions
-# for entry in [PROJECT_DIR, PROJECT_ENCLOSING_DIR, SITE_PACKAGES_DIR]:
-#  if entry not in sys.path:
-#    sys.path.append( entry )
-
 ## become self-aware, padawan
 CONFIG_DIR = os.path.dirname( os.path.abspath(__file__) )
 PROJECT_DIR = os.path.dirname( CONFIG_DIR )  # papiweb_code
