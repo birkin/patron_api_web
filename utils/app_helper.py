@@ -49,7 +49,7 @@ class PapiHelper( object ):
             log.debug( 'papi_json, `%s`' % papi_json )
             log.debug( 'c' )
             jdct = json.loads( papi_json )
-            log.debug( 'jdct, `%s`' % pprint.pformat(jdct) )
+            # log.debug( 'jdct, `%s`' % pprint.pformat(jdct) )
         except Exception as e:
             log.exception( 'exception on lookup; traceback follows; processing will continue...' )
             jdct = self.build_error_dict( e )

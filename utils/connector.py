@@ -25,10 +25,20 @@ class PatronAPI( object ):
         self.url_pattern = defaults['PATRON_API_URL_PATTERN']
         log.debug( 'PatronAPI instantiated' )
 
+    # def grab_data( self, barcode ):
+    #     """ Grabs and parses patron-api html. """
+    #     html = self.grab_raw_data( barcode )
+    #     d = self.parse_data( html )
+    #     output = json.dumps( d, sort_keys=True, indent=2 )
+    #     return output
+
     def grab_data( self, barcode ):
         """ Grabs and parses patron-api html. """
-        html = self.grab_raw_data( barcode )
-        d = self.parse_data( html )
+        result_dct = self.grab_raw_data( barcode )
+        if result_dct['status_code'] is not 200:
+            d = { 'problem': f'status_code, `{result_dct["status_code"]}`; content, ```{result_dct["content"]}```; see logs for more info.' }
+        else:
+            d = self.parse_data( result_dct['content'] )
         output = json.dumps( d, sort_keys=True, indent=2 )
         return output
 
@@ -36,11 +46,23 @@ class PatronAPI( object ):
         """ Makes http request.
             Called by grab_data() """
         url = self.url_pattern.replace( 'BARCODE', barcode )
-        log.debug( 'url, `%s`' % url )
+        log.debug( f'url, `{url}`' )
         r = requests.get( url )
-        html = r.text
-        log.debug( 'html, ```%s```' % html )
-        return html
+        log.debug( f'type-status-code, `{type(r.status_code)}`' )
+        return_dct = {
+            'status_code': r.status_code, 'content': r.content }
+        log.debug( f'return_dct, ```{pprint.pformat(return_dct)}```' )
+        return return_dct
+
+    # def grab_raw_data( self, barcode ):
+    #     """ Makes http request.
+    #         Called by grab_data() """
+    #     url = self.url_pattern.replace( 'BARCODE', barcode )
+    #     log.debug( 'url, `%s`' % url )
+    #     r = requests.get( url )
+    #     html = r.text
+    #     log.debug( 'html, ```%s```' % html )
+    #     return html
 
     def parse_data( self, html ):
         """ Converts html to dct.
