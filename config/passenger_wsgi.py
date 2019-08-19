@@ -9,7 +9,8 @@
         env3_papiweb/
      """
 
-import logging, os, pprint, sys
+# import logging, os, pprint, sys
+import os, pprint, sys
 
 
 ## become self-aware, padawan
@@ -27,16 +28,16 @@ var_dct = shellvars.get_vars( SETTINGS_FILE )
 for ( key, val ) in var_dct.items():
     os.environ[key.decode('utf-8')] = val.decode('utf-8')
 
-## set up logging
-LOG_PATH = os.environ['papiweb__LOG_PATH']
-logging.basicConfig(
-    filename=LOG_PATH,
-    level=logging.DEBUG,
-    format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
-    datefmt='%d/%b/%Y %H:%M:%S'
-    )
-log = logging.getLogger(__name__)
-log.debug( 'log setup' )
+# ## set up logging
+# LOG_PATH = os.environ['papiweb__LOG_PATH']
+# logging.basicConfig(
+#     filename=LOG_PATH,
+#     level=logging.DEBUG,
+#     format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
+#     datefmt='%d/%b/%Y %H:%M:%S'
+#     )
+# log = logging.getLogger(__name__)
+# log.debug( 'log setup' )
 
 ## rock & roll
 from papiweb_code.papiweb_app import app as application

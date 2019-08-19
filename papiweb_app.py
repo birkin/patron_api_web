@@ -5,6 +5,7 @@ import datetime, json, logging, os, pprint
 import flask
 from flask import render_template
 from flask_basicauth import BasicAuth
+from papiweb_code.utils import log_config
 from papiweb_code.utils.app_helper import PapiHelper
 
 
@@ -19,15 +20,17 @@ app.secret_key = os.environ['papiweb__SECRET_KEY']
 basic_auth = BasicAuth( app )
 papi_helper = PapiHelper()
 
-LOG_PATH = os.environ['papiweb__LOG_PATH']
-logging.basicConfig(
-    filename=LOG_PATH,
-    level=logging.DEBUG,
-    format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
-    datefmt='%d/%b/%Y %H:%M:%S'
-    )
-log = logging.getLogger(__name__)
-log.debug( 'log setup' )
+log = log_config.setup_logger()
+
+# LOG_PATH = os.environ['papiweb__LOG_PATH']
+# logging.basicConfig(
+#     filename=LOG_PATH,
+#     level=logging.DEBUG,
+#     format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
+#     datefmt='%d/%b/%Y %H:%M:%S'
+#     )
+# log = logging.getLogger(__name__)
+# log.debug( 'log setup' )
 
 
 @app.route( '/', methods=['GET'] )  # /papiweb
