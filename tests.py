@@ -7,6 +7,7 @@ if PROJECT_DIR_PATH not in sys.path:
     sys.path.append( PROJECT_DIR_PATH )
 
 from papiweb_code.utils.connector import PatronAPI
+from papiweb_code.utils.app_helper import PapiHelper
 
 
 ## logging
@@ -27,6 +28,12 @@ class PatronApiTests( unittest.TestCase ):
         self.PATRON_BARCODE_02 = os.environ['papiweb__TEST_PATRON_BARCODE_02']
         defaults = { 'PATRON_API_URL_PATTERN': os.environ['papiweb__PATRON_API_URL_PATTERN'] }
         self.papi = PatronAPI( defaults )
+        self.api_helper = PapiHelper()
+
+    def test_clean_barcode(self):
+        """ Checks barcode-massaging. """
+        barcode = '1234567'
+        self.assertEqual( 'foo', self.api_helper.clean_barcode(barcode) )
 
     def test_grab_data(self):
         """ Tests response is json of hashes.

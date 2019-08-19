@@ -43,7 +43,6 @@ def handle_v1():
     return flask.jsonify( return_dct )
 
 
-
 if __name__ == '__main__':
     if os.getenv( 'DEVBOX' ) == 'true':
         app.run( host='0.0.0.0', debug=True )

@@ -16,12 +16,6 @@ log = logging.getLogger(__name__)
 class PapiHelper( object ):
     """ Helper functions for app->handle_ezb_v1() """
 
-    # def __init__( self, logger ):
-    #     self.logger = logger
-    #     self.defaults = {
-    #         'PATRON_API_URL_PATTERN': os.environ['papiweb__PATRON_API_URL_PATTERN'],
-    #         }
-
     def __init__( self ):
         self.defaults = {
             'PATRON_API_URL_PATTERN': os.environ['papiweb__PATRON_API_URL_PATTERN'],
@@ -45,7 +39,7 @@ class PapiHelper( object ):
         """ Runs lookup; returns patron-api html output.
             Called by papiweb_app.handle_v1() """
         log.debug( "params['patron_barcode'], `%s`" % params['patron_barcode'] )
-        cleaned_patron_barcode = params['patron_barcode'].replace( ' ', '' )
+        cleaned_patron_barcode = self.clean_barcode( params['patron_barcode'] )
         log.debug( f'cleaned_patron_barcode, `{cleaned_patron_barcode}`' )
         papi = PatronAPI( self.defaults )
         log.debug( 'a' )
@@ -60,6 +54,14 @@ class PapiHelper( object ):
             log.exception( 'exception on lookup; traceback follows; processing will continue...' )
             jdct = self.build_error_dict( e )
         return jdct
+
+    def clean_barcode( self, initial_barcode ):
+        """ Handles barcode with spaces. In separate function to be testable.
+            Called by do_lookup() """
+        log.debug( f'initial_barcode, `{initial_barcode}`' )
+        cleaned_patron_barcode = initial_barcode.replace( ' ', '' )
+        log.debug( f'cleaned_patron_barcode, `{cleaned_patron_barcode}`' )
+        return cleaned_patron_barcode
 
     def build_response_dct( self, params, jdct ):
         """ Assembles request and response parts of the returned response.
