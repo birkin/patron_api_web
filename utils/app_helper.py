@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-
 """
 Helper for papiweb_app.py
 """
 
 import datetime, json, logging, os, pprint, time
-import flask
-import requests
-# from p_api import PatronAPI
-from connector import PatronAPI
+
+import flask, requests
+from papiweb_code.utils.p_api import PatronAPI
 
 
 # logger = logging.getLogger(__name__)
@@ -22,7 +19,7 @@ class PapiHelper( object ):
     def __init__( self, logger ):
         self.logger = logger
         self.defaults = {
-            'PATRON_API_URL_PATTERN': unicode( os.environ['papiweb__PATRON_API_URL_PATTERN'] ),
+            'PATRON_API_URL_PATTERN': os.environ['papiweb__PATRON_API_URL_PATTERN'],
             }
 
     ## main functions (called by papiweb_app.py functions)
