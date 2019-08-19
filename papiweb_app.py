@@ -15,6 +15,7 @@ log = logging.getLogger(__name__)
 app = flask.Flask(__name__)
 app.config['BASIC_AUTH_USERNAME'] = os.environ['papiweb__BASIC_AUTH_USERNAME']
 app.config['BASIC_AUTH_PASSWORD'] = os.environ['papiweb__BASIC_AUTH_PASSWORD']
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.secret_key = os.environ['papiweb__SECRET_KEY']
 basic_auth = BasicAuth( app )
 # logger = log_helper.setup_logger()
