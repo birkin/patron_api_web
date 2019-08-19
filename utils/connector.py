@@ -7,8 +7,8 @@ import requests
 
 
 ## log to console
-LOG_PATH = unicode( os.environ['papiweb__LOG_PATH'], 'utf-8' )
-LOG_LEVEL = unicode( os.environ.get('papiweb__LOG_LEVEL') )
+LOG_PATH = os.environ['papiweb__LOG_PATH']
+LOG_LEVEL = os.environ.get('papiweb__LOG_LEVEL')
 level_dict = { 'debug': logging.DEBUG, 'info':logging.INFO }
 logging.basicConfig(
     filename=LOG_PATH,
