@@ -40,10 +40,12 @@ class PapiHelper( object ):
         """ Runs lookup; returns patron-api html output.
             Called by papiweb_app.handle_v1() """
         self.logger.debug( "params['patron_barcode'], `%s`" % params['patron_barcode'] )
+        cleaned_patron_barcode = params['patron_barcode'].replace( ' ', '' )
+        self.logger.debug( f'cleaned_patron_barcode, `{cleaned_patron_barcode}`' )
         papi = PatronAPI( self.defaults )
         self.logger.debug( 'a' )
         try:
-            papi_json = papi.grab_data( params['patron_barcode'] )
+            papi_json = papi.grab_data( cleaned_patron_barcode )
             self.logger.debug( 'b' )
             self.logger.debug( 'papi_json, `%s`' % papi_json )
             self.logger.debug( 'c' )
